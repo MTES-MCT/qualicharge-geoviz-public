@@ -1,0 +1,7 @@
+*__pycache__
+
+# dossiers de données
+data/Saturation
+data/GeoData
+
+*.DS_Store
