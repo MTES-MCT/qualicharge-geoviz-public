@@ -111,24 +111,16 @@ def write():
     fmap = render_map_from_gdf(rte_gdf, ["lib_rte"])
     display_rte_map(fmap)
     
-    
-    # Combine TDG data with saturation
 
     # Display timelapse
-    saturation_france_segments = anon_gdf.groupby(["lib_rte", "group_id", "segment", "date_min"]).agg(geometry=("geometry", "first"), max_saturation=("max_saturation", "mean")).reset_index()
-    saturation_france_segments = get_qualiscore_color(saturation_france_segments, "max_saturation")
+    #saturation_france_segments = anon_gdf.groupby(["lib_rte", "group_id", "segment", "date_min"]).agg(geometry=("geometry", "first"), max_saturation=("max_saturation", "mean")).reset_index()
+    #saturation_france_segments = get_qualiscore_color(saturation_france_segments, "max_saturation")
 
-    rte_list = saturation_france_segments["lib_rte"].unique()
-    #st.write(gdf_stations_afir)
-    # Select rte and display Map of IRVE on rte
-    # stations_gdf = gdf_stations_afir.copy()[["id_station_itinerance", "geometry", "nom_station", "sum_power"]]
-    # stations_gdf["station_coord"] = stations_gdf["geometry"]
-    # stations_gdf = stations_gdf.set_geometry(stations_gdf["geometry"].buffer(3000))
-    # stations_rte_gdf = gpd.sjoin(rte_gdf.drop_duplicates(), stations_gdf)
-    #stations_rte_gdf = stations_rte_gdf.set_geometry(stations_rte_gdf["station_coord"])
+    rte_list = anon_gdf["lib_rte"].unique()
+    
 
     #Rajouter légende
-    display_color_legend(saturation_france_segments)
+    display_color_legend(anon_gdf)
 
     #Choix des autoroutes pour l'affichage
     multiselect = st.multiselect("Choisissez les autoroutes à afficher sur l'étude", options=rte_list)
@@ -142,7 +134,7 @@ def write():
     
     
 
-    sat_fr_filtered = saturation_france_segments[saturation_france_segments["lib_rte"].isin(autoroutes_etude)]
+    sat_fr_filtered = anon_gdf[anon_gdf["lib_rte"].isin(autoroutes_etude)]
     sat_fr_filtered = sat_fr_filtered.set_geometry(sat_fr_filtered["geometry"], crs=2154)
     segments_grey_map = render_map_from_gdf(rte_gdf, ["lib_rte"], fond="cartodbpositron", color="grey")
     split_count = anon_gdf["period_of_day"].max() + 1

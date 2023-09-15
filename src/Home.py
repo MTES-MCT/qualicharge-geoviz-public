@@ -5,6 +5,7 @@ import awesome_streamlit as ast
 from assets.pages import About, GeoViz
 
 
+# Liste des pages
 PAGES = {
     "❓ A propos": About,
     "🗺️ Analyse des données géographiques": GeoViz,
